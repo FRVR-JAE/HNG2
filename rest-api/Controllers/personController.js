@@ -41,3 +41,16 @@ exports.updatePerson = async (req, res) => {
     res.status(500).json({ error: 'An error occurred while updating the person.' });
   }
 };
+
+// Delete a person by ID
+exports.deletePerson = async (req, res) => {
+    try {
+      const person = await Person.findByIdAndRemove(req.params.id);
+      if (!person) {
+        return res.status(404).json({ error: 'Person not found.' });
+      }
+      res.status(204).send(); // Successfully deleted, return a 204 status (No Content)
+    } catch (error) {
+      res.status(500).json({ error: 'An error occurred while deleting the person.' });
+    }
+  };

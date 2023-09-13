@@ -11,4 +11,8 @@ router.get('/persons', personController.getAllPersons);
 // Update a person by ID
 router.put('/persons/:id', personController.updatePerson);
 
+// Delete a person by ID
+router.delete('/persons/:id', personController.deletePerson);
+
+
 module.exports = router;
