@@ -13,23 +13,25 @@ exports.createPerson = async (req, res) => {
   }
 };
 
-// Retrieve all persons
-exports.getAllPersons = async (req, res) => {
+// Retrieve details of a person by user_id
+exports.getPersonById = async (req, res) => {
   try {
-    const persons = await Person.find();
-    res.status(200).json(persons);
+    const person = await Person.findById(req.params.user_id);
+    if (!person) {
+      return res.status(404).json({ error: 'Person not found.' });
+    }
+    res.status(200).json(person);
   } catch (error) {
-    console.error('Error retrieving persons:', error);
-    res.status(500).json({ error: 'An error occurred while retrieving persons.' });
+    res.status(500).json({ error: 'An error occurred while retrieving the person.' });
   }
 };
 
-// Update a person by ID
-exports.updatePerson = async (req, res) => {
+// Update details of an existing person by user_id
+exports.updatePersonById = async (req, res) => {
   try {
     const { name, age, email } = req.body;
     const person = await Person.findByIdAndUpdate(
-      req.params.id,
+      req.params.user_id,
       { name, age, email },
       { new: true }
     );
@@ -42,10 +44,10 @@ exports.updatePerson = async (req, res) => {
   }
 };
 
-// Delete a person by ID
-exports.deletePerson = async (req, res) => {
+// Remove a person by user_id
+exports.deletePersonById = async (req, res) => {
     try {
-      const person = await Person.findByIdAndRemove(req.params.id);
+      const person = await Person.findByIdAndRemove(req.params.user_id);
       if (!person) {
         return res.status(404).json({ error: 'Person not found.' });
       }
@@ -53,4 +55,4 @@ exports.deletePerson = async (req, res) => {
     } catch (error) {
       res.status(500).json({ error: 'An error occurred while deleting the person.' });
     }
-  };
+};
