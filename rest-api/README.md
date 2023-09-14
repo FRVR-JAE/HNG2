@@ -35,54 +35,28 @@ To Test, use the following command:
 
  npm test
 API Endpoints
-base url : https://alex-hngx-stage2.onrender.com
-
 Create a New Person
-Create a new person by sending a POST request to /api with a JSON body containing the person's name.
+Endpoint: POST /api/persons
+Request Body: JSON with person data (name, age, email)
+Response: JSON with the created person data
 
-Request
-POST /api
-Content-Type: application/json
 
-{
-  "name": "John Doe"
-}
-Response
-{
- "_id": "5fbd6a53a2b65d00173b9a1f",
-  "name": "John Doe",
-}
-To Retrieve a person with ID
-Retrieve a person's details by sending a GET request to /api/:id, where :id is the person's unique identifier.
+Retrieve All Persons
+Endpoint: GET /api/persons
+Response: JSON array of all persons
 
-Request
-GET /api/5fbd6a53a2b65d00173b9a1f
-Response
-{
-  "_id": "5fbd6a53a2b65d00173b9a1f",
-  "name": "John Doe",
 
-}
+Retrieve a Person by ID
+Endpoint: GET /api/persons/:id
+Response: JSON with the details of the specified person
+
+
 Update a Person by ID
-Update a person's details by sending a PUT request to /api/:id, where :id is the person's unique identifier. Provide a JSON body containing the updated name.
+Endpoint: PUT /api/persons/:id
+Request Body: JSON with updated person data (name, age, email)
+Response: JSON with the updated person data
 
-Request
-PUT /api/5fbd6a53a2b65d00173b9a1f Content-Type: application/json
 
-{ "name": "Updated Name" }
-
-Response
-{
-  "_id": "5fbd6a53a2b65d00173b9a1f",
-  "name": "Updated Name",
-}
 Delete a Person by ID
-Remove a person by sending a DELETE request to /api/:id, where :id is the person's unique identifier
-
-Request
-DELETE /api/5fbd6a53a2b65d00173b9a1f
-
-Response
-{
-  "message": "Person deleted"
-}
+Endpoint: DELETE /api/persons/:id
+Response: No content (204 status code) if successful
