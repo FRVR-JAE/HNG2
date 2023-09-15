@@ -1,7 +1,7 @@
 const Person = require('../Models/person.js');
 
 // Create a new person
-exports.createPerson = async (req, res) => {
+const createPerson = async (req, res) => {
   try {
     const { name, age, email } = req.body;
     const person = new Person({ name, age, email });
@@ -14,9 +14,9 @@ exports.createPerson = async (req, res) => {
 };
 
 // Retrieve details of a person by user_id
-exports.getPersonById = async (req, res) => {
+const getPersonById = async (req, res) => {
   try {
-    const person = await Person.findById(req.params.user_id);
+    const person = await Person.findById(req.params.id);
     if (!person) {
       return res.status(404).json({ error: 'Person not found.' });
     }
@@ -26,12 +26,11 @@ exports.getPersonById = async (req, res) => {
   }
 };
 
-// Update details of an existing person by user_id
-exports.updatePersonById = async (req, res) => {
+const updatePersonById = async (req, res) => {
   try {
     const { name, age, email } = req.body;
     const person = await Person.findByIdAndUpdate(
-      req.params.user_id,
+      req.params.id, // Use req.params.id to get the 'id' parameter from the route
       { name, age, email },
       { new: true }
     );
@@ -44,15 +43,25 @@ exports.updatePersonById = async (req, res) => {
   }
 };
 
+
+
 // Remove a person by user_id
-exports.deletePersonById = async (req, res) => {
-    try {
-      const person = await Person.findByIdAndRemove(req.params.user_id);
-      if (!person) {
-        return res.status(404).json({ error: 'Person not found.' });
-      }
-      res.status(204).send(); // Successfully deleted, return a 204 status (No Content)
-    } catch (error) {
-      res.status(500).json({ error: 'An error occurred while deleting the person.' });
+const deletePersonById = async (req, res) => {
+  try {
+    const person = await Person.findByIdAndRemove(req.params.id); // Use req.params.id
+    if (!person) {
+      return res.status(404).json({ error: 'Person not found.' });
     }
+    res.status(204).send(); // Successfully deleted, return a 204 status (No Content)
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred while deleting the person.' });
+  }
+};
+
+
+module.exports = {
+  createPerson,
+  getPersonById,
+  updatePersonById,
+  deletePersonById,
 };

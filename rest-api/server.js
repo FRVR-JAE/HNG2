@@ -1,13 +1,16 @@
+// server.js
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
-const personRoutes = require('./Routes/personRoutes'); // Import your routes
+const personRoutes = require('./Routes/personRoutes');
 
 dotenv.config();
 
-const mongoURI = process.env.MONGODB_URI;
+const app = express();
 const port = process.env.PORT || 8080;
+const mongoURI = process.env.MONGODB_URI;
 
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,
@@ -24,24 +27,11 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
 });
 
-db.on('disconnected', () => {
-  console.warn('MongoDB disconnected');
-});
-
-process.on('SIGINT', () => {
-  db.close(() => {
-    console.log('MongoDB connection closed due to application termination');
-    process.exit(0);
-  });
-});
-
-const app = express();
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Use your defined routes with the '/api' prefix
-app.use('/api', personRoutes);
+app.use('/', personRoutes); 
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
